@@ -4,33 +4,72 @@
 
 <div class="content-section">
 
-    <form method="POST" action="/" enctype = "multipart/form-data">
-        {{ image_form.hidden_tag() }}
+    <span>
+        <form method="POST" action="/" enctype="multipart/form-data">
+            {{ image_form.hidden_tag() }}
 
 
-        <div class="form-group">
+            <div class="form-group">
 
 
-            <!-- Adding in some bootstrap to the form, label(adds in the css class) -->
-            {{ image_form.image.label() }}
-            {{ image_form.image(class="form-control-file") }}
+                <!-- Adding in some bootstrap to the form, label(adds in the css class) -->
+                {{ image_form.image.label() }}
+                {{ image_form.image(class="form-control-file") }}
 
-            {% if image_form.image.errors %}
-            {% for error in image_form.image.errors %}
+                {% if image_form.image.errors %}
+                {% for error in image_form.image.errors %}
 
-            <span class='text-danger'>{{ error }}</span>
+                <span class='text-danger'>{{ error }}</span>
 
-            {% endfor %}
-            {% endif %}
+                {% endfor %}
+                {% endif %}
 
-        </div>
+            </div>
 
 
-        <div class="form-group">
-            {{ image_form.submit(class="btn btn-outline-info") }}
-        </div>
+            <div class="form-group">
+                {{ image_form.submit(class="btn btn-outline-info") }}
+            </div>
 
-    </form>
+        </form>
+        
+        {% for img_path in images %}
+
+            <img src="{{url_for('static', filename = 'images/' + img_path)}}" alt="">
+
+        {% endfor %}
+
+    </span>
+
+    <span>
+        <form method="POST" action="{{url_for('main.generate_image_route')}}" enctype="multipart/form-data">
+            {{ larger_image_form.hidden_tag() }}
+
+
+            <div class="form-group">
+
+
+                <!-- Adding in some bootstrap to the form, label(adds in the css class) -->
+                {{ larger_image_form.image.label() }}
+                {{ larger_image_form.image(class="form-control-file") }}
+
+                {% if larger_image_form.image.errors %}
+                {% for error in larger_image_form.image.errors %}
+
+                <span class='text-danger'>{{ error }}</span>
+
+                {% endfor %}
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+                {{ larger_image_form.submit(class="btn btn-outline-info") }}
+            </div>
+
+        </form>
+    </span>
 
 </div>
 
