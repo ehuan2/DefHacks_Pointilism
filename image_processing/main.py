@@ -3,8 +3,8 @@ import os
 import numpy as np
 import cv2
 
-size_8 = (8,8)
-size_256 = (256,256)
+size_8 = (8, 8)
+size_256 = (256, 256)
 
 pictureRGB = {}
 
@@ -26,30 +26,24 @@ for i in os.listdir('./images'):
         image.save("./8images/{}.png".format(fn))
 '''
 
+
 def getAverageRGBN(image):
-  """
-  Given PIL Image, return average value of color as (r, g, b)
-  """
-  # get image as numpy array
-  im = np.array(image)
-  # get shape
-  w,h,d = im.shape
-  # change shape
-  im.shape = (w*h, d)
-  # get average
-  return tuple(np.average(im, axis=0))
+    """
+    Given PIL Image, return average value of color as (r, g, b)
+    """
+    # get image as numpy array
+    im = np.array(image)
+    # get shape
+    w, h, d = im.shape
+    # change shape
+    im.shape = (w*h, d)
+    # get average
+    return tuple(np.average(im, axis=0))
+
 
 for imagename in os.listdir('./8images'):
-    average = [0,0,0]
+    average = [0, 0, 0]
     image = Image.open("./8images/"+imagename)
     pictureRGB[imagename] = getAverageRGBN(image)
 
 print(pictureRGB)
-
-    
-
-
-
-
-
-
