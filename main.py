@@ -120,8 +120,8 @@ while True:
     tempG += pix[xcounter, ycounter][1]
     tempB += pix[xcounter, ycounter][2]
 
-    print("special pix")
-    print(pix[125, 10])
+   # print("special pix")
+    #print(pix[125, 10])
     #print("R = " + str(tempR))
     #print("G = " + str(tempG))
     #print("B = " + str(tempB))
@@ -159,7 +159,7 @@ print(closestImages)
 
 
 
-
+horizontalImages = []
 counter = 0
 for i in range(31):
     images = [Image.open(x) for x in closestImages[counter]]
@@ -176,26 +176,31 @@ for i in range(31):
         x_offset += im.size[0]
 
     new_im.save('./horizontalImages/horiz' + str(counter) + '.jpg')
-    
+    horizontalImages.append('horiz' + str(counter) + '.jpg')
+
     counter += 1
 
     
+      
+print("horizontal images = ")
+print(horizontalImages)
 
-'''
-print(len(closestImages))
-for i in range(32):
-    currentImg = "./8images/{}".format(closestImages[31*i])
-    for j in range(31):
-        if j == 0:
-            currentImg = merge_images_x(currentImg, "./8images/{}".format(closestImages[31*i+j]), closestImages[31*i], closestImages[31*i+j])
-        else:
-            currentImg = merge_images_x(currentImg, "./8images/{}".format(closestImages[31*i+j]), "horiz.png", closestImages[31*i+j])
 
-        if j == 30:
-            print("horiz saves")
-            currentImg.save("./horizontalImages/horiz.png")
-        
-'''
+
+images = [Image.open("./horizontalImages/"+x) for x in horizontalImages]
+widths, heights = zip(*(i.size for i in images))
+
+total_width = max(widths)
+max_height = sum(heights)
+
+new_im = Image.new('RGB', (total_width, max_height))
+
+y_offset = 0
+for im in images:
+    new_im.paste(im, (0,y_offset))
+    y_offset += im.size[1]
+
+new_im.save('./horizontalImages/final.jpg')
 
 
 
