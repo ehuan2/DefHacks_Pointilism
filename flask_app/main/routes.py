@@ -6,6 +6,7 @@ import os
 import secrets
 
 cookies_dict = {}
+larger_cookies_dict = {}
 
 main = Blueprint('main', __name__)
 
@@ -19,10 +20,13 @@ def index():
     # creates a cookie if it doesn't exist
     if not cookie:
         cookie = secrets.token_hex(8)
-        cookies_dict[cookie] = []
+        cookies_dict[cookie] = {}
 
     if not cookies_dict.get(cookie):
-        cookies_dict[cookie] = []
+        cookies_dict[cookie] = {}
+
+    if not larger_cookies_dict.get(cookie):
+        larger_cookies_dict[cookie] = []
 
     # the different forms, smaller image and larger
     image_form = ImageInputForm()
@@ -32,13 +36,15 @@ def index():
 
         if image_form.image.data:
         
+            filename, picture = save_picture(
+                image_form.image.data, output_size=(8, 8))
+
             # adds in an image based on the cookie
-            # cookies_dict[cookie].append(save_picture(
-            #     image_form.image.data, output_size=(8, 8)))
-            save_picture(image_form.image.data, output_size=(8, 8))
+            cookies_dict[cookie][filename] = picture
+
 
     # gets the images
-    images = cookies_dict.get(cookie)
+    images = larger_cookies_dict.get(cookie)
 
     # prepares a response
     resp = make_response(render_template("main.html", image_form=image_form,
@@ -63,11 +69,13 @@ def generate_image_route():
             if not cookie:
                 cookie = secrets.token_hex(8)
 
-
+            # creates the cookies
             if not cookies_dict.get(cookie):
-                cookies_dict[cookie] = []
+                cookies_dict[cookie] = {}
 
-            cookies_dict[cookie].extend(generate_image(larger_image))
-
+            if not larger_cookies_dict.get(cookie):
+                larger_cookies_dict[cookie] = []
+                
+            larger_cookies_dict[cookie].extend(generate_image(larger_image, cookies_dict.get(cookie), (256,256)))
 
     return redirect(url_for('main.index'))

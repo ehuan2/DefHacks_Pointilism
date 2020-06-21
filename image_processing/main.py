@@ -6,10 +6,11 @@ import cv2
 import math
 import urllib
 
-
-def get_processed_image(larger_image, images_8 = []):
+# processes the large image, and the smaller ones
+def get_processed_image(larger_image, images_8 = {}):
 
     if larger_image:
+
 
         # the larger image is the one that will be processed later
         # the images 8 is the group of images that will be passed in (or can simply be used through db and/or the file system)
@@ -39,11 +40,15 @@ def get_processed_image(larger_image, images_8 = []):
             # get average
             return tuple(np.average(im, axis=0))
 
+
         # Average pixels in all images and save it to dict
         for imagename in os.listdir(f'{path}/8images'):
             image = Image.open(f"{path}/8images/"+imagename)
             pictureRGB[imagename] = getAverageRGBN(image)
 
+        for small_image_name, small_image in images_8.items():
+            pictureRGB[small_image_name] = getAverageRGBN(small_image)
+            
 
         im = np.array(larger_image)
         # get shape
@@ -122,8 +127,16 @@ def get_processed_image(larger_image, images_8 = []):
             
         # going to loop through everything, building the images
         for i in range(31):
-            images = [Image.open(f'{path}/8images/{x}')
-                    for x in closestImages[counter]]
+            
+            images = []
+
+            for x in closestImages[counter]:
+                try:
+                    images.append(Image.open(f'{path}/8images/{x}'))
+                except:
+                    images.append(images_8.get(x))
+
+
             widths, heights = zip(*(i.size for i in images))
 
             total_width = sum(widths)

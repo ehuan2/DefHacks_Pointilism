@@ -5,35 +5,40 @@ import os
 import secrets
 
 
-# the following adds the images to the 8images file, and then returns the path to it
+# the following adds the image as a byte format, and reformats it
 def save_picture(form_picture, output_size):
 
     filename = secrets.token_hex(8)
 
-    image_path = f'./image_processing/8images/{filename}'
-
     img = Image.open(form_picture)
 
-    img.resize(output_size)
+    img = img.resize(output_size)
 
-    img.save(image_path)
+    return (filename, img)
 
-    return filename
+# generates the larger image
+def generate_image(larger_image, smaller_images, output_size):
 
-def generate_image(larger_image):
-    filename = secrets.token_hex(8)
+    larger_image = Image.open(larger_image)
 
-    def create_path(index):
-        return os.path.join(current_app.root_path, 'static/images', filename + f"{index}.png")
+    larger_image = larger_image.resize(output_size)
 
-    image_path = create_path(0)
+    img = get_processed_image(larger_image, smaller_images)
 
-    img = Image.open(larger_image)
+    return [create_bytes_image(larger_image), create_bytes_image(img)]
 
-    img.save(image_path)
+# creates the byte versions available in html
+def create_bytes_image(image):
+     # next is base 64 encoding it for both images
+    import base64
+    from io import BytesIO
 
-    img = get_processed_image(img)
+    buffered = BytesIO()
+    image.save(buffered, format="JPEG")
+    encoded = base64.b64encode(buffered.getvalue())
 
-    img.save(create_path(1))
+    encoded = encoded.decode("utf-8")
 
-    return [filename + "0.png", filename + "1.png"]
+    mime = "image/jpeg"
+    uri = "data:%s;base64, %s" % (mime, encoded)
+    return uri

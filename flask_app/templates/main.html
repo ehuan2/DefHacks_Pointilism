@@ -35,8 +35,10 @@
         
         {% for img_path in images %}
 
-            <img src="{{url_for('static', filename = 'images/' + img_path)}}" alt="">
-
+            <img src="{{img_path}}" alt="">
+            <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
         {% endfor %}
 
     </span>
