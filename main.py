@@ -19,7 +19,7 @@ path1 = os.path.normpath(".")
 
 for i in os.listdir(path1):
     if i.endswith(".png") and str(i) == "face.png":
-        print("ah yes")
+        #print("ah yes")
         image = Image.open(i)
         fn, fext = os.path.splitext(i)
         new_image = image.resize(size_256)
@@ -53,8 +53,8 @@ for imagename in os.listdir('./8images'):
     image = Image.open("./8images/"+imagename)
     pictureRGB[imagename] = getAverageRGBN(image)
 
-print("pic rgb")
-print(pictureRGB)
+#print("pic rgb")
+#print(pictureRGB)
 
 
 
@@ -82,10 +82,10 @@ while True:
     #print(image.size)
     #print(pix[xcounter,ycounter])
 
-    print("XCounter = " + str(xcounter))
-    print("YCounter = " + str(ycounter))
-    print("endx = " + str(endx))
-    print("endy = " + str(endy))
+    #print("XCounter = " + str(xcounter))
+    #print("YCounter = " + str(ycounter))
+    #print("endx = " + str(endx))
+    #print("endy = " + str(endy))
 
     if ycounter == 255 and xcounter == 255:
         #faceAverages.append([tempR/64, tempG/64, tempB/64])
@@ -99,7 +99,7 @@ while True:
         endx = 7
         ycounter += 1
         xcounter = -1
-        print("face avg")
+        #print("face avg")
         tempR = 0
         tempB = 0
         tempG = 0
@@ -108,7 +108,7 @@ while True:
         ycounter -=7
         endx += 8
         faceAverages.append([tempR/64, tempG/64, tempB/64])
-        print("appended")
+        #print("appended")
         tempR = 0
         tempB = 0
         tempG = 0
@@ -128,7 +128,7 @@ while True:
     
     xcounter+=1
  
-print(faceAverages)
+#print(faceAverages)
 
 
 #print("len 1 = " + str(len(faceAverages[0])))
@@ -154,7 +154,7 @@ for square in faceAverages:
             closestImages.append(tempClosest)
             tempClosest = []
 
-print(closestImages)
+#print(closestImages)
 
 
 
@@ -162,7 +162,7 @@ print(closestImages)
 horizontalImages = []
 counter = 0
 for i in range(31):
-    images = [Image.open(x) for x in closestImages[counter]]
+    images = [Image.open("./8images/" + x) for x in closestImages[counter]]
     widths, heights = zip(*(i.size for i in images))
 
     total_width = sum(widths)
@@ -182,8 +182,8 @@ for i in range(31):
 
     
       
-print("horizontal images = ")
-print(horizontalImages)
+#print("horizontal images = ")
+#print(horizontalImages)
 
 
 
