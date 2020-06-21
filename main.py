@@ -171,9 +171,9 @@ for i in range(31):
     new_im = Image.new('RGB', (total_width, max_height))
 
     x_offset = 0
-    for im in images:
-        new_im.paste(im, (x_offset,0))
-        x_offset += im.size[0]
+    for ima in images:
+        new_im.paste(ima, (x_offset,0))
+        x_offset += ima.size[0]
 
     new_im.save('./horizontalImages/horiz' + str(counter) + '.jpg')
     horizontalImages.append('horiz' + str(counter) + '.jpg')
@@ -196,11 +196,15 @@ max_height = sum(heights)
 new_im = Image.new('RGB', (total_width, max_height))
 
 y_offset = 0
-for im in images:
-    new_im.paste(im, (0,y_offset))
-    y_offset += im.size[1]
+for ima in images:
+    new_im.paste(ima, (0,y_offset))
+    y_offset += ima.size[1]
 
-new_im.save('./horizontalImages/final.jpg')
+image = cv2.imread('./horizontalImages/final.jpg')
+
+cv2.imshow('img', image)
+cv2.waitKey(0)
+#new_im.save('./horizontalImages/final.jpg')
 
 
 
