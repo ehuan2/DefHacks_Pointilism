@@ -1,32 +1,39 @@
 from flask import current_app
 from PIL import Image
+from image_processing.main import get_processed_image
 import os
 import secrets
 
 
+# the following adds the images to the 8images file, and then returns the path to it
 def save_picture(form_picture, output_size):
 
-    filename = form_picture.filename
+    filename = secrets.token_hex(8)
 
-    image_path = os.path.join(current_app.root_path, 'static/images', filename)
+    image_path = f'./image_processing/8images/{filename}'
 
     img = Image.open(form_picture)
 
-    img.thumbnail(output_size)
+    img.resize(output_size)
 
     img.save(image_path)
 
     return filename
 
-
-
 def generate_image(larger_image):
     filename = secrets.token_hex(8)
 
-    image_path = os.path.join(current_app.root_path, 'static/images', filename + ".png")
+    def create_path(index):
+        return os.path.join(current_app.root_path, 'static/images', filename + f"{index}.png")
+
+    image_path = create_path(0)
 
     img = Image.open(larger_image)
 
     img.save(image_path)
 
-    return filename + ".png"
+    img = get_processed_image(img)
+
+    img.save(create_path(1))
+
+    return [filename + "0.png", filename + "1.png"]

@@ -33,8 +33,9 @@ def index():
         if image_form.image.data:
         
             # adds in an image based on the cookie
-            cookies_dict[cookie].append(save_picture(
-                image_form.image.data, output_size=(8, 8)))
+            # cookies_dict[cookie].append(save_picture(
+            #     image_form.image.data, output_size=(8, 8)))
+            save_picture(image_form.image.data, output_size=(8, 8))
 
     # gets the images
     images = cookies_dict.get(cookie)
@@ -66,7 +67,7 @@ def generate_image_route():
             if not cookies_dict.get(cookie):
                 cookies_dict[cookie] = []
 
-            cookies_dict[cookie].append(generate_image(larger_image))
+            cookies_dict[cookie].extend(generate_image(larger_image))
 
 
     return redirect(url_for('main.index'))
